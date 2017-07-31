@@ -1,0 +1,68 @@
+    Administrative Contact
+    Administrative Contact Email
+
+    Metadata Creator
+    Metadata Creator Email
+    Publication date
+x   Repository Country
+x   Repository City
+x   Holding Institution
+x   Repository Name
+x   Source collection
+x   Call Number/ID
+    Record URL
+x   Alternate ID
+    Alternate ID type
+    Manuscript Name
+    Author name
+    Author URI
+    Translator name
+    Translator URI
+    Artist name
+    Artist URI
+    Former Owner name
+    Former Owner URI
+x   Provenance details
+
+x   Date (single)
+x   Date (range) start
+x   Date (range) end
+    Date (narrative)
+x   Place of origin
+    Origin details
+
+    Description
+x   Language
+    Foliation / Pagination
+    Flyleaves & Leaves
+    Layout
+    Colophon
+    Collation
+x   Script
+x   Decoration
+    Binding
+    Watermarks
+    Catchwords
+    Signatures
+x   Note(s)
+
+x   Support material
+x   Page dimensions
+    Bound dimensions
+
+    Related resource
+    Related resource URL
+
+    Subject: names
+    Subject: names URI
+
+x   Subject: topical
+    Subject: topical URI
+
+    Subject: geographic
+    Subject: geographic URI
+
+    Subject: genre/form
+    Subject: genre/form URI
+
+    Subject: Keywords

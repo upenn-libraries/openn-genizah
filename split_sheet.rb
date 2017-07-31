@@ -1,0 +1,155 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+require 'pp'
+require 'rubyXL'
+
+COLUMN_MAP = Hash.new { |hash,key|
+  hash[key] = hash[key - 1].next
+}.merge({0 => "A"})
+
+TEMPLATE_HEADING_COLUMN = 1 # Excel col: B
+VALUE_START_COLUMN      = 3 # Excel col: D
+DISPLAY_PAGE_COLUMN     = 1 # Excel col: B
+FILE_NAME_COLUMN        = 2 # Excel col: C
+PAGES_START_ROW         = 3 # Excel row: 4
+
+MAPPING = YAML::load open(File.expand_path '../mapping.yml', __FILE__)
+SOURCE_DIR = File.expand_path '../data/Halper', __FILE__
+
+RV = %w{ r v }
+
+#----------------------------------------------------------------------
+# METHODS
+#----------------------------------------------------------------------
+
+def mapped? heading
+  MAPPING.include? heading.to_sym
+end
+
+def cell_empty? cell
+  cell.nil? || cell.value.nil? || cell.value.to_s.strip.empty?
+end
+
+def xlsx_file? path
+  return false if path.nil? || path.to_s.strip.empty?
+  File.exists?(path) && path =~ /\.xlsx?/
+end
+
+def find_row worksheet, heading, col=TEMPLATE_HEADING_COLUMN
+  blank_count = 0
+  (0..200).each do |i|
+    break if blank_count > 5
+    cell = worksheet[i][col]
+    cell_empty? cell and blank_count += 1 and next
+    blank_count = 0
+    return i if normal_head(cell.value) == heading.to_s
+  end
+end
+
+def normal_head value
+  value.downcase.strip.gsub /[^[:alnum:]]+/, '_'
+end
+
+def get_cell sheet, row, col, default=''
+  return sheet.add_cell row, col, default if sheet[row].nil?
+  return sheet.add_cell row, col, default if sheet[row][col].nil?
+  sheet[row][col]
+end
+
+def is_i? val
+ /\A[-+]?\d+\z/ === val.to_s
+end
+
+#----------------------------------------------------------------------
+# INPUT
+#----------------------------------------------------------------------
+
+xlsx_input = ARGV.shift
+fail "Argument is not an XLSX file '#{xlsx_input}'" unless xlsx_file? xlsx_input
+
+#----------------------------------------------------------------------
+# CONFIGURE
+#----------------------------------------------------------------------
+template_path = File.expand_path '../data/template.xlsx', __FILE__
+template = RubyXL::Parser.parse template_path
+# description = template['Description']
+
+MAPPING.each do |heading, deets|
+  row = find_row template['Description'], heading
+  raise "Could not find heading: #{heading}" if row.nil?
+  deets[:row] = row
+end
+
+# pp MAPPING
+
+workbook = RubyXL::Parser.parse xlsx_input
+worksheet = workbook[0]
+
+headers = worksheet[0].cells.map do |cell|
+  break if cell.nil?
+  normal_head(cell.value).to_sym
+end
+
+def transform val, rule
+  case rule
+  when 'YEAR'
+    raise "Not a valid integer: #{val}" unless is_i? val
+    sprintf "%04d", val.to_i
+  when 'FIX_PERIOD_SEMICOLON'
+    # replace a sequence '.;' or '. ;' with '.'; so that
+    # '...blah blah.; Yadda ..' becomes '...blah blah. Yadda ..'
+    val.gsub /\.\s*;/, '.'
+  else
+    val
+  end
+end
+
+folder_base_index = headers.index :folder_base
+
+(1..1000).each do |rowindex|
+  break if worksheet[rowindex].nil?
+  row = worksheet[rowindex]
+
+  # -- The directory
+  folder_base = row[folder_base_index].value
+  if folder_base.nil? or folder_base.strip.empty?
+    address = "#{COLUMN_MAP[folder_base_index]}#{rowindex}"
+    raise "Row doesn't have folder_base expected at #{address}"
+  end
+  folder = File.join SOURCE_DIR, folder_base
+  Dir.mkdir folder unless Dir.exists? folder
+
+  # -- workbook
+  out_xlsx = File.join(folder, "openn_metadata.xlsx")
+  FileUtils.cp template_path, out_xlsx
+  outbook = RubyXL::Parser.parse out_xlsx
+
+  # -- Description sheet
+  description = outbook['Description']
+  headers.each_with_index do |head, hindex|
+    next unless mapped? head
+    cell = row[hindex]
+    deets = MAPPING[head]
+    next if cell_empty? cell
+    cell.value.split(/\|/).each_with_index do |val, j|
+      target_row = deets[:row]
+      target_col = VALUE_START_COLUMN + j
+      cell = get_cell description, target_row, target_col
+      cell.change_contents transform(val, deets[:transform])
+    end
+  end
+
+  pages = outbook['Pages']
+  Dir["#{folder}/*.tif"].each_with_index do |tif,k|
+    base = File.basename tif
+    file_cell = get_cell pages, PAGES_START_ROW + k, FILE_NAME_COLUMN
+    file_cell.change_contents base
+    page_cell = get_cell pages, PAGES_START_ROW + k, DISPLAY_PAGE_COLUMN
+    page_num = "#{(k + 2)/ 2}#{RV[k % 2]}"
+    page_cell.change_contents page_num
+  end
+
+  outbook.write out_xlsx
+  puts "Wrote #{out_xlsx}"
+end

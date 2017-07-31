@@ -1,0 +1,41 @@
+Call Number/ID
+folder_base
+Repository Country
+Repository City
+Holding Institution
+Repository Name
+Source Collection
+Date (narrative)
+Date (range) start
+Date (range) end
+Page dimensions
+Note(s)
+Note(s) 2
+Layout
+Support Material
+Language 1
+Language 2
+Language 3
+Place of origin
+Script
+Decoration
+#Person Associated with Fragment
+#Person Associated with Fragment 2
+#Person Associated with Fragment 3
+#Person Associated with Fragment 4
+Provenance details
+#Uniform Resource Identifier for facsimile
+#Uniform Title
+#Uniform Title Name of part/section of a work
+#Uniform Title Number of part/section of a work
+#Uniform Title Subheading
+Manuscript Name
+Subject: topical 1
+Subject: topical 2
+Subject: topical 3
+Subject: topical 4
+Subject: topical 5
+Subject: topical 6
+Subject: topical 7
+#Varying Form of Title
+Alternate ID
