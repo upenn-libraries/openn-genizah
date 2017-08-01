@@ -1,25 +1,28 @@
 ---
 :call_number_id:
   :head: Call Number/ID
-  :transform: 
+  :transform:
 :repository_country:
   :head: Repository Country
-  :transform: 
+  :transform:
 :repository_city:
   :head: Repository City
-  :transform: 
+  :transform:
 :holding_institution:
   :head: Holding Institution
-  :transform: 
+  :transform:
 :repository_name:
   :head: Repository Name
-  :transform: 
+  :transform:
 :source_collection:
   :head: Source Collection
-  :transform: 
+  :transform:
+:record_url:
+  :head: Record URL
+  :transform:
 :date_narrative_:
   :head: Date (narrative)
-  :transform: 
+  :transform:
 :date_range_start:
   :head: Date (range) start
   :transform: YEAR
@@ -28,43 +31,43 @@
   :transform: YEAR
 :page_dimensions:
   :head: Page dimensions
-  :transform: 
+  :transform:
 :note_s_:
   :head: Note(s)
-  :transform: 
+  :transform:
 :layout:
   :head: Layout
-  :transform: 
+  :transform:
 :support_material:
   :head: Support Material
-  :transform: 
+  :transform:
 :language:
   :head: Language
-  :transform: 
+  :transform:
 :subject_topical:
   :head: 'Subject: topical'
-  :transform: 
+  :transform:
 :place_of_origin:
   :head: Place of origin
-  :transform: 
+  :transform:
 :script:
   :head: Script
-  :transform: 
+  :transform:
 :decoration:
   :head: Decoration
-  :transform: 
+  :transform:
 :author_name:
   :head: Author name
-  :transform: 
+  :transform:
 :former_owner_name:
   :head: Former Owner name
-  :transform: 
+  :transform:
 :scribe_name:
   :head: Scribe name
-  :transform: 
+  :transform:
 :provenance_details:
   :head: Provenance details
   :transform: FIX_PERIOD_SEMICOLON
 :manuscript_name:
   :head: Manuscript Name
-  :transform: 
+  :transform:

@@ -9,6 +9,7 @@ Repository City
 Holding Institution
 Repository Name
 Source Collection
+Record URL
 Date (narrative)
 Date (range) start
 Date (range) end

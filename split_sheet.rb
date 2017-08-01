@@ -17,6 +17,16 @@ PAGES_START_ROW         = 3 # Excel row: 4
 MAPPING = YAML::load open(File.expand_path '../mapping.yml', __FILE__)
 SOURCE_DIR = File.expand_path '../data/Halper', __FILE__
 
+# IDS_FILE = File.expand_path '../halper_ids.txt', __FILE__
+IDS_FILE = File.expand_path '../junk.txt', __FILE__
+
+HalperCallNumber = Struct.new :folder, :mark, :url
+HALPER_IDS = open(IDS_FILE).readlines.inject({}) { |h, line|
+  callno = HalperCallNumber.new *line.strip.split(/\t/)
+  h[callno.folder] = callno unless callno.url == 'NONE'
+  h
+}
+
 RV = %w{ r v }
 
 #----------------------------------------------------------------------
@@ -138,6 +148,13 @@ folder_base_index = headers.index :folder_base
       cell = get_cell description, target_row, target_col
       cell.change_contents transform(val, deets[:transform])
     end
+  end
+
+  if HALPER_IDS.include? folder_base
+    deets = MAPPING[:record_url]
+    callno = HALPER_IDS[folder_base]
+    cell = get_cell description, deets[:row], VALUE_START_COLUMN
+    cell.change_contents callno.url
   end
 
   pages = outbook['Pages']
