@@ -44,3 +44,4 @@ bower.json
 .byebug_history
 data/Halper
 junk*
+.idea/
