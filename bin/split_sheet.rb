@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 # Add the lib dir to our load path
-$LOAD_PATH.unshift(File.expand_path '../lib', __FILE__)
+$LOAD_PATH.unshift(File.expand_path '../../lib', __FILE__)
 
 require 'yaml'
 require 'pp'
@@ -20,23 +20,24 @@ DISPLAY_PAGE_COLUMN     = 1 # Excel col: B
 FILE_NAME_COLUMN        = 2 # Excel col: C
 PAGES_START_ROW         = 3 # Excel row: 4
 
-MAPPING = YAML::load open(File.expand_path '../mapping.yml', __FILE__)
-SOURCE_DIR = File.expand_path '../data/FLP', __FILE__
+MAPPING = YAML::load open(File.expand_path '../../mapping.yml', __FILE__)
+# SOURCE_DIR = File.expand_path '../data/FLP', __FILE__
 # SOURCE_DIR = '/Volumes/mmscratchspace/openn/packages/Prep/genizah'
+SOURCE_DIR = '/mnt/scratch02/openn/packages/Prep/flp_leaves'
 
-IDS_FILE = File.expand_path '../halper_ids.txt', __FILE__
+# IDS_FILE = File.expand_path '../halper_ids.txt', __FILE__
 
 CREATE_DIRS    = ENV['GENIZAH_CREATE_DIRS']    || false
 ALLOW_NO_TIFFS = ENV['GENIZAH_ALLOW_NO_TIFFS'] || false
 NO_CLOBBER     = ENV['GENIZAH_NO_CLOBBER']     || false
 REQUIRE_TIFFS  = ENV['REQUIRE_TIFFS']          || true
 
-HalperCallNumber = Struct.new :folder, :mark, :url
-HALPER_IDS = open(IDS_FILE).readlines.inject({}) { |h, line|
-  callno = HalperCallNumber.new *line.strip.split(/\t/)
-  h[callno.folder] = callno unless callno.url == 'NONE'
-  h
-}
+# HalperCallNumber = Struct.new :folder, :mark, :url
+# HALPER_IDS = open(IDS_FILE).readlines.inject({}) { |h, line|
+#   callno = HalperCallNumber.new *line.strip.split(/\t/)
+#   h[callno.folder] = callno unless callno.url == 'NONE'
+#   h
+# }
 
 RV = %w{ r v }
 
@@ -106,7 +107,7 @@ fail "Argument is not an XLSX file '#{xlsx_input}'" unless xlsx_file? xlsx_input
 #----------------------------------------------------------------------
 # CONFIGURE
 #----------------------------------------------------------------------
-template_path = File.expand_path '../data/template.xlsx', __FILE__
+template_path = File.expand_path '../../data/template.xlsx', __FILE__
 template = RubyXL::Parser.parse template_path
 # description = template['Description']
 
