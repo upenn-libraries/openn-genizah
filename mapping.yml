@@ -74,3 +74,9 @@
 :subject_keywords:
   :head: 'Subject: Keywords'
   :transform:
+:metadata_creator:
+  :head: Metadata Creator
+  :transform:
+:metadata_creator_email:
+  :head: Metadata Creator Email
+  :transform:
