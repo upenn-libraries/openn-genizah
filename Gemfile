@@ -2,7 +2,7 @@
 
 ruby '2.4.1'
 
-gem 'rubyXL', '3.3.23'
+gem 'rubyXL', '~> 3.3.23'
 gem 'nokogiri', '1.8.0'
 
 group :development, :test do
