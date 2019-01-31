@@ -21,14 +21,15 @@ FILE_NAME_COLUMN        = 2 # Excel col: C
 PAGES_START_ROW         = 3 # Excel row: 4
 
 MAPPING = YAML::load open(File.expand_path '../mapping.yml', __FILE__)
-# SOURCE_DIR = File.expand_path '../data/Halper', __FILE__
-SOURCE_DIR = '/Volumes/mmscratchspace/openn/packages/Prep/genizah'
+SOURCE_DIR = File.expand_path '../data/FLP', __FILE__
+# SOURCE_DIR = '/Volumes/mmscratchspace/openn/packages/Prep/genizah'
 
 IDS_FILE = File.expand_path '../halper_ids.txt', __FILE__
 
 CREATE_DIRS    = ENV['GENIZAH_CREATE_DIRS']    || false
 ALLOW_NO_TIFFS = ENV['GENIZAH_ALLOW_NO_TIFFS'] || false
 NO_CLOBBER     = ENV['GENIZAH_NO_CLOBBER']     || false
+REQUIRE_TIFFS  = ENV['REQUIRE_TIFFS']          || true
 
 HalperCallNumber = Struct.new :folder, :mark, :url
 HALPER_IDS = open(IDS_FILE).readlines.inject({}) { |h, line|
@@ -142,11 +143,11 @@ folder_base_index = headers.index :folder_base
     end
     folder = File.join SOURCE_DIR, folder_base
     if Dir.exists? folder
-      if Dir["#{folder}/*.tif"].empty? && !ALLOW_NO_TIFFS
+      if Dir["#{folder}/*.tif"].empty? && REQUIRE_TIFFS
         STDERR.puts "Skipping folder without TIFFs: '#{folder}'; row #{rowindex}"
         next
       end
-    elsif !!CREATE_DIRS
+    elsif CREATE_DIRS
       Dir.mkdir folder
     else
       STDERR.puts "Skipping folder creation, row #{rowindex}, folder_base '#{folder_base}'"
@@ -181,21 +182,28 @@ folder_base_index = headers.index :folder_base
       end
     end
 
-    if HALPER_IDS.include? folder_base
-      deets = MAPPING[:record_url]
-      callno = HALPER_IDS[folder_base]
-      cell = get_cell description, deets[:row], VALUE_START_COLUMN
-      cell.change_contents callno.url
+    pages = outbook['Pages']
+    # image files   image labels
+    # :image_files :image_labels
+    files  = row[headers.index :image_files].value.to_s.strip.chomp('|').split('|')
+    labels = row[headers.index :image_labels].value.to_s.strip.chomp('|').split('|')
+    unless files.size == labels.size
+      STDERR.puts "WARNING: files do not match labels: #{files}/#{labels}"
+      STDERR.puts "SKIPPING: row: #{rowindex + 1} -- #{row[headers.index :call_number_id].value}"
+      next unless File.exist? out_xlsx
+      STDERR.puts "Removing output file '#{out_xlsx}'" if File.exist? out_xlsx
+      FileUtils.rm out_xlsx if File.exist? out_xlsx
+      next
     end
 
-    pages = outbook['Pages']
-    Dir["#{folder}/*.tif"].sort.each_with_index do |tif,k|
-      base = File.basename tif
+    file_labels = files.zip labels
+    file_labels.each_with_index do |file_label, k|
+      file, label = file_label
+      base = File.basename file
       file_cell = get_cell pages, PAGES_START_ROW + k, FILE_NAME_COLUMN
       file_cell.change_contents base
       page_cell = get_cell pages, PAGES_START_ROW + k, DISPLAY_PAGE_COLUMN
-      page_num = "#{(k + 2)/ 2}#{RV[k % 2]}"
-      page_cell.change_contents page_num
+      page_cell.change_contents label
     end
 
     outbook.write out_xlsx
@@ -204,6 +212,6 @@ folder_base_index = headers.index :folder_base
     STDERR.puts $!
     STDERR.puts "Error processing row #{rowindex} and folder_base '#{folder_base}'"
     STDERR.puts "Removing output file '#{out_xlsx}'"
-    FileUtils.rm out_xlsx
+    FileUtils.rm out_xlsx if File.exist? out_xlsx
   end
 end
