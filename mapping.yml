@@ -71,3 +71,6 @@
 :manuscript_name:
   :head: Manuscript Name
   :transform:
+:subject_keywords:
+  :head: 'Subject: Keywords'
+  :transform:
