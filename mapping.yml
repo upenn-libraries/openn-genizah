@@ -23,6 +23,9 @@
 :date_narrative_:
   :head: Date (narrative)
   :transform:
+:date_single_:
+  :head: Date (single)
+  :transform: YEAR
 :date_range_start:
   :head: Date (range) start
   :transform: YEAR
