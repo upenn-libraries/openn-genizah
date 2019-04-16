@@ -6,6 +6,8 @@ lewis_e_m_001_005,mcai010051.tif|mcai010052.tif
 lewis_e_m_001_006,mcai010061.tif|mcai010062.tif
 lewis_e_m_001_007,mcai010071.tif|mcai010072.tif
 lewis_e_m_001_008,mcai010081.tif|mcai010082.tif
+lewis_e_m_043_001a,mcai4301a1.tif|mcai4301a2.tif
+lewis_e_m_043_001b,mcai4301b1.tif|mcai4301b2.tif
 lewis_e_m_001_009,mcai010091.tif|mcai010092.tif
 lewis_e_m_001_010,mcai010101.tif|mcai010102.tif
 lewis_e_m_001_011,mcai010111.tif|mcai010112.tif
@@ -716,7 +718,7 @@ lewis_e_m_042_027a-b,mcai420273.tif|mcai420274.tif|mcai420275.tif|mcai420276.tif
 lewis_e_m_042_028a-d,mcai420280.tif|mcai420283.tif|mcai420284.tif|mcai420285.tif|mcai420286.tif|mcai420287.tif|mcai420288.tif|mcai420289.tif
 lewis_e_m_042_028a,mcai420281.tif|mcai420282.tif
 lewis_e_m_042_029,mcai420291.tif|mcai420292.tif
-lewis_e_m_043_002a,mcai430021.tif|mcai430023.tif|mcai430024.tif
+lewis_e_m_043_002a,mcai430023.tif|mcai430024.tif
 lewis_e_m_043_002b,mcai430025.tif|mcai430026.tif
 lewis_e_m_043_002c,mcai430027.tif|mcai430028.tif
 lewis_e_m_043_003,mcai430030.tif|mcai430031.tif|mcai430032.tif
@@ -739,8 +741,6 @@ lewis_e_m_043_016,mcai430161.tif|mcai430162.tif
 lewis_e_m_043_017,mcai430171.tif|mcai430172.tif
 lewis_e_m_043_018,mcai430181.tif|mcai430182.tif
 lewis_e_m_043_019,mcai430191.tif|mcai430192.tif
-lewis_e_m_043_001a,mcai4301a1.tif|mcai4301a2.tif
-lewis_e_m_043_001b,mcai4301b1.tif|mcai4301b2.tif
 lewis_e_m_043_001c-e,mcai4301c1.tif|mcai4301c2.tif|mcai4301d1.tif|mcai4301d2.tif|mcai4301e1.tif|mcai4301e2.tif
 lewis_e_m_043_001f,mcai4301f1.tif|mcai4301f2.tif
 lewis_e_m_043_001g,mcai4301g1.tif|mcai4301g2.tif
@@ -858,7 +858,7 @@ lewis_e_m_048_018-020,mcai480181.tif|mcai480182.tif|mcai480191.tif|mcai480192.ti
 lewis_e_m_048_021,mcai480211.tif|mcai480212.tif
 lewis_e_m_048_022-023,mcai480221.tif|mcai480222.tif|mcai480231.tif|mcai480232.tif
 lewis_e_m_048_024,mcai480241.tif|mcai480242.tif
-lewis_e_m_048_025-026,mcai480251.tif|mcai480252.tif|mcai480261.tif|mcai480262.tif
+lewis_e_m_048_025,mcai480251.tif|mcai480252.tif
 lewis_e_m_049_001,mcai490011.tif|mcai490012.tif
 lewis_e_m_049_002,mcai490021.tif|mcai490022.tif
 lewis_e_m_049_003,mcai490031.tif|mcai490032.tif
@@ -1035,7 +1035,7 @@ lewis_e_m_067_027,mcai670271.tif|mcai670272.tif
 lewis_e_m_068_001,mcai680011.tif|mcai680012.tif
 lewis_e_m_068_002,mcai680021.tif|mcai680022.tif
 lewis_e_m_068_003-006,mcai680031.tif|mcai680032.tif|mcai680041.tif|mcai680042.tif|mcai680051.tif|mcai680052.tif|mcai680061.tif|mcai680062.tif
-lewis_e_m_068_007-009,mcai680073.tif|mcai680074.tif|mcai680075.tif|mcai680076.tif|mcai680077.tif|mcai680081.tif|mcai680082.tif|mcai680091.tif|mcai680092.tif
+lewis_e_m_068_007-009,mcai680073.tif|mcai680074.tif|mcai680075.tif|mcai680076.tif|mcai680081.tif|mcai680082.tif|mcai680091.tif|mcai680092.tif
 lewis_e_m_068_010-011,mcai680101.tif|mcai680102.tif|mcai680111.tif|mcai680112.tif
 lewis_e_m_068_012,mcai680121.tif|mcai680122.tif
 lewis_e_m_068_013,mcai680131.tif|mcai680132.tif
@@ -1323,7 +1323,7 @@ lewis_t128,mcat051281.tif|mcat051282.tif|mcat051283.tif|mcat051284.tif
 lewis_t129,mcat051291.tif|mcat051292.tif|mcat051293.tif|mcat051294.tif
 lewis_t130,mcat051301.tif|mcat051302.tif|mcat051303.tif|mcat051304.tif
 lewis_t131,mcat051311.tif|mcat051312.tif|mcat051313.tif|mcat051314.tif|mcat051315.tif|mcat051316.tif|mcat051317.tif|mcat051318.tif
-lewis_t132,mcat051321.tif|mcat051322.tif|mcat051323.tif|mcat051324.tif|mcat051325.tif|mcat051326.tif|mcat051327.tif|mcat051328.tif
+lewis_t132,mcat051321.tif|mcat051322.tif|mcat051323.tif|mcat051324.tif|mcat051325.tif|mcat051328.tif
 lewis_t133,mcat051331.tif|mcat051332.tif
 lewis_t134,mcat051341.tif|mcat051342.tif
 lewis_t135,mcat051351.tif|mcat051352.tif|mcat051353.tif|mcat051354.tif
