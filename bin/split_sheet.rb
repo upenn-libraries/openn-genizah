@@ -6,6 +6,7 @@ $LOAD_PATH.unshift(File.expand_path '../../lib', __FILE__)
 require 'yaml'
 require 'pp'
 require 'rubyXL'
+require 'rubyXL/convenience_methods/cell'
 require 'genizah'
 
 include Genizah::Util
@@ -23,7 +24,8 @@ PAGES_START_ROW         = 3 # Excel row: 4
 MAPPING = YAML::load open(File.expand_path '../../mapping.yml', __FILE__)
 # SOURCE_DIR = File.expand_path '../data/FLP', __FILE__
 # SOURCE_DIR = '/Volumes/mmscratchspace/openn/packages/Prep/genizah'
-SOURCE_DIR = '/mnt/scratch02/openn/packages/Prep/flp_leaves'
+# SOURCE_DIR = '/mnt/scratch02/openn/packages/Prep/flp_leaves'
+SOURCE_DIR = '/Users/emeryr/tmp/geniza_files/data'
 
 # IDS_FILE = File.expand_path '../halper_ids.txt', __FILE__
 
@@ -84,10 +86,15 @@ def transform val, rule
   when 'YEAR'
     raise "Not a valid integer: #{val}" unless is_i? val
     sprintf "%04d", val.to_i
-  when 'FIX_PERIOD_SEMICOLON'
-    # replace a sequence '.;' or '. ;' with '.'; so that
-    # '...blah blah.; Yadda ..' becomes '...blah blah. Yadda ..'
-    val.gsub /\.\s*;/, '.'
+  when 'REMOVE_TRAILING_PERIOD'
+    # remove a final '.'
+    # for cleaning up keyword terms
+    val.sub /\.\s*$/, ''
+  when 'STRING_CLEANUP'
+    # replace a sequence '.;' or '. ;' with '. ': '...blah blah.; Yadda ..' becomes '...blah blah. Yadda ..''
+    # proper spacing around semicolons 'text;text' as 'text; text'
+    # remove a trailing ':'
+    val.gsub(/\.\s*;/, '. ').gsub(/\s*;\s*/, '; ').sub(/\s*:\s*$/, '').strip
   else
     val
   end
@@ -143,6 +150,7 @@ folder_base_index = headers.index :folder_base
       raise "Row doesn't have folder_base expected at #{address}"
     end
     folder = File.join SOURCE_DIR, folder_base
+    # binding.pry
     if Dir.exists? folder
       if Dir["#{folder}/*.tif"].empty? && REQUIRE_TIFFS
         STDERR.puts "Skipping folder without TIFFs: '#{folder}'; row #{rowindex}"
@@ -155,7 +163,7 @@ folder_base_index = headers.index :folder_base
       next
     end
 
-    # -- workbook
+
     out_xlsx = File.join(folder, "openn_metadata.xlsx")
     if File.exists? out_xlsx
       if NO_CLOBBER
@@ -168,7 +176,6 @@ folder_base_index = headers.index :folder_base
     FileUtils.cp template_path, out_xlsx
     outbook = RubyXL::Parser.parse out_xlsx
 
-    # -- Description sheet
     description = outbook['Description']
     headers.each_with_index do |head, hindex|
       next unless mapped? head
@@ -184,11 +191,12 @@ folder_base_index = headers.index :folder_base
     end
 
     pages = outbook['Pages']
-    # image files   image labels
-    # :image_files :image_labels
-    files  = row[headers.index :image_files].value.to_s.strip.chomp('|').split('|')
-    labels = row[headers.index :image_labels].value.to_s.strip.chomp('|').split('|')
-    unless files.size == labels.size
+
+    # binding.pry
+    if headers.index :image_files
+     files  = row[headers.index :image_files].value.to_s.strip.chomp('|').split('|')
+     labels = row[headers.index :image_labels].value.to_s.strip.chomp('|').split('|')
+     unless files.size == labels.size
       STDERR.puts "WARNING: files do not match labels: #{files}/#{labels}"
       STDERR.puts "SKIPPING: row: #{rowindex + 1} -- #{row[headers.index :call_number_id].value}"
       next unless File.exist? out_xlsx
@@ -206,13 +214,25 @@ folder_base_index = headers.index :folder_base
       page_cell = get_cell pages, PAGES_START_ROW + k, DISPLAY_PAGE_COLUMN
       page_cell.change_contents label
     end
+  else
+    Dir["#{folder}/*.tif"].each_with_index do |tif,k|
+      base = File.basename tif
+      file_cell = get_cell pages, PAGES_START_ROW + k, FILE_NAME_COLUMN
+      file_cell.change_contents base
+      page_cell = get_cell pages, PAGES_START_ROW + k, DISPLAY_PAGE_COLUMN
+      page_num = "#{(k + 2)/ 2}#{RV[k % 2]}"
+      page_cell.change_contents page_num
+    end
+  end
 
     outbook.write out_xlsx
     puts "Wrote #{out_xlsx}"
   rescue
     STDERR.puts $!
+    STDERR.puts $!.backtrace
     STDERR.puts "Error processing row #{rowindex} and folder_base '#{folder_base}'"
     STDERR.puts "Removing output file '#{out_xlsx}'"
-    FileUtils.rm out_xlsx if File.exist? out_xlsx
+    # binding.pry
+    FileUtils.rm out_xlsx if out_xlsx && File.exist?(out_xlsx)
   end
 end

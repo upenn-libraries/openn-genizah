@@ -37,7 +37,7 @@
   :transform:
 :note_s_:
   :head: Note(s)
-  :transform:
+  :transform: STRING_CLEANUP
 :layout:
   :head: Layout
   :transform:
@@ -49,13 +49,13 @@
   :transform:
 :subject_topical:
   :head: 'Subject: topical'
-  :transform:
+  :transform: REMOVE_TRAILING_PERIOD
 :place_of_origin:
   :head: Place of origin
   :transform:
 :script:
   :head: Script
-  :transform:
+  :transform: STRING_CLEANUP
 :decoration:
   :head: Decoration
   :transform:
@@ -70,10 +70,10 @@
   :transform:
 :provenance_details:
   :head: Provenance details
-  :transform: FIX_PERIOD_SEMICOLON
+  :transform: STRING_CLEANUP
 :manuscript_name:
   :head: Manuscript Name
-  :transform:
+  :transform: STRING_CLEANUP
 :subject_keywords:
   :head: 'Subject: Keywords'
   :transform:
