@@ -3,9 +3,9 @@ GEM
   specs:
     coderay (1.1.2)
     method_source (0.8.2)
-    mini_portile2 (2.2.0)
-    nokogiri (1.8.0)
-      mini_portile2 (~> 2.2.0)
+    mini_portile2 (2.4.0)
+    nokogiri (1.10.4)
+      mini_portile2 (~> 2.4.0)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -20,7 +20,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  nokogiri (= 1.8.0)
+  nokogiri (= 1.10.4)
   pry (= 0.10.4)
   rubyXL (~> 3.4.1)
 
