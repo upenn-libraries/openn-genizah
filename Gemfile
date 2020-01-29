@@ -1,6 +1,6 @@
  source 'https://rubygems.org'
 
-ruby '2.4.1'
+ruby '~> 2.4'
 
 gem 'rubyXL', '~> 3.4.1'
 gem 'nokogiri', '1.10.4'
