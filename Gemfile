@@ -3,7 +3,7 @@
 ruby '2.4.1'
 
 gem 'rubyXL', '~> 3.4.1'
-gem 'nokogiri', '1.8.0'
+gem 'nokogiri', '1.10.4'
 
 group :development, :test do
   gem 'pry', '0.10.4'
