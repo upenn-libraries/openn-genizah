@@ -4,7 +4,7 @@ GEM
     coderay (1.1.2)
     method_source (0.8.2)
     mini_portile2 (2.4.0)
-    nokogiri (1.10.4)
+    nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
     pry (0.10.4)
       coderay (~> 1.1.0)
@@ -20,7 +20,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  nokogiri (= 1.10.4)
+  nokogiri (= 1.10.10)
   pry (= 0.10.4)
   rubyXL (~> 3.4.1)
 
