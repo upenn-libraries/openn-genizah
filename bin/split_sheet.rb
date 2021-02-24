@@ -25,7 +25,7 @@ MAPPING = YAML::load open(File.expand_path '../../mapping.yml', __FILE__)
 # SOURCE_DIR = File.expand_path '../data/FLP', __FILE__
 # SOURCE_DIR = '/Volumes/mmscratchspace/openn/packages/Prep/genizah'
 # SOURCE_DIR = '/mnt/scratch02/openn/packages/Prep/flp_leaves'
-SOURCE_DIR = '/Users/emeryr/tmp/geniza_files/data'
+SOURCE_DIR = '/Users/emeryr/tmp/zucker_files/data'
 
 # IDS_FILE = File.expand_path '../halper_ids.txt', __FILE__
 
@@ -42,6 +42,7 @@ REQUIRE_TIFFS  = ENV['REQUIRE_TIFFS']          || true
 # }
 
 RV = %w{ r v }
+SKIP_IMAGE_PATTERN = %r{ref|colorbar}i
 
 #----------------------------------------------------------------------
 # METHODS
@@ -139,7 +140,7 @@ folder_base_index = headers.index :folder_base
 #----------------------------------------------------------------------
 
 (1..1000).each do |rowindex|
-  break if worksheet[rowindex].nil?
+  next if worksheet[rowindex].nil?
   row = worksheet[rowindex]
 
   begin
@@ -216,6 +217,7 @@ folder_base_index = headers.index :folder_base
     end
   else
     Dir["#{folder}/*.tif"].each_with_index do |tif,k|
+      next if tif =~ SKIP_IMAGE_PATTERN
       base = File.basename tif
       file_cell = get_cell pages, PAGES_START_ROW + k, FILE_NAME_COLUMN
       file_cell.change_contents base
