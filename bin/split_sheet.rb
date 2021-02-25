@@ -11,9 +11,9 @@ require 'genizah'
 
 include Genizah::Util
 
-COLUMN_MAP = Hash.new { |hash,key|
+COLUMN_MAP = Hash.new { |hash, key|
   hash[key] = hash[key - 1].next
-}.merge({0 => "A"})
+}.merge({ 0 => "A" })
 
 TEMPLATE_HEADING_COLUMN = 1 # Excel col: B
 VALUE_START_COLUMN      = 3 # Excel col: D
@@ -21,13 +21,11 @@ DISPLAY_PAGE_COLUMN     = 1 # Excel col: B
 FILE_NAME_COLUMN        = 2 # Excel col: C
 PAGES_START_ROW         = 3 # Excel row: 4
 
-MAPPING = YAML::load open(File.expand_path '../../mapping.yml', __FILE__)
+MAPPING    = YAML::load open(File.expand_path '../../mapping.yml', __FILE__)
+SOURCE_DIR = '/Users/emeryr/tmp/zucker_files/data'
 # SOURCE_DIR = File.expand_path '../data/FLP', __FILE__
 # SOURCE_DIR = '/Volumes/mmscratchspace/openn/packages/Prep/genizah'
 # SOURCE_DIR = '/mnt/scratch02/openn/packages/Prep/flp_leaves'
-SOURCE_DIR = '/Users/emeryr/tmp/zucker_files/data'
-
-# IDS_FILE = File.expand_path '../halper_ids.txt', __FILE__
 
 CREATE_DIRS    = ENV['GENIZAH_CREATE_DIRS']    || false
 ALLOW_NO_TIFFS = ENV['GENIZAH_ALLOW_NO_TIFFS'] || false
@@ -41,7 +39,7 @@ REQUIRE_TIFFS  = ENV['REQUIRE_TIFFS']          || true
 #   h
 # }
 
-RV = %w{ r v }
+RV                 = %w{ r v }
 SKIP_IMAGE_PATTERN = %r{ref|colorbar}i
 
 #----------------------------------------------------------------------
@@ -55,11 +53,6 @@ end
 def cell_empty? cell
   cell.nil? || cell.value.nil? || cell.value.to_s.strip.empty?
 end
-
-# def xlsx_file? path
-#   return false if path.nil? || path.to_s.strip.empty?
-#   File.exists?(path) && path =~ /\.xlsx?/
-# end
 
 def find_row worksheet, heading, col=TEMPLATE_HEADING_COLUMN
   blank_count = 0
@@ -75,12 +68,6 @@ end
 def normal_head value
   value.downcase.strip.gsub /[^[:alnum:]]+/, '_'
 end
-
-# def get_cell sheet, row, col, default=''
-#   return sheet.add_cell row, col, default if sheet[row].nil?
-#   return sheet.add_cell row, col, default if sheet[row][col].nil?
-#   sheet[row][col]
-# end
 
 def transform val, rule
   case rule
@@ -102,7 +89,7 @@ def transform val, rule
 end
 
 def is_i? val
- /\A[-+]?\d+\z/ === val.to_s
+  /\A[-+]?\d+\z/ === val.to_s
 end
 
 #----------------------------------------------------------------------
@@ -116,7 +103,7 @@ fail "Argument is not an XLSX file '#{xlsx_input}'" unless xlsx_file? xlsx_input
 # CONFIGURE
 #----------------------------------------------------------------------
 template_path = File.expand_path '../../data/template.xlsx', __FILE__
-template = RubyXL::Parser.parse template_path
+template      = RubyXL::Parser.parse template_path
 # description = template['Description']
 
 MAPPING.each do |heading, deets|
@@ -125,7 +112,7 @@ MAPPING.each do |heading, deets|
   deets[:row] = row
 end
 
-workbook = RubyXL::Parser.parse xlsx_input
+workbook  = RubyXL::Parser.parse xlsx_input
 worksheet = workbook[0]
 
 headers = worksheet[0].cells.map do |cell|
@@ -164,7 +151,6 @@ folder_base_index = headers.index :folder_base
       next
     end
 
-
     out_xlsx = File.join(folder, "openn_metadata.xlsx")
     if File.exists? out_xlsx
       if NO_CLOBBER
@@ -180,13 +166,13 @@ folder_base_index = headers.index :folder_base
     description = outbook['Description']
     headers.each_with_index do |head, hindex|
       next unless mapped? head
-      cell = row[hindex]
+      cell  = row[hindex]
       deets = MAPPING[head]
       next if cell_empty? cell
       cell.value.to_s.split(/\|/).each_with_index do |val, j|
         target_row = deets[:row]
         target_col = VALUE_START_COLUMN + j
-        cell = get_cell description, target_row, target_col
+        cell       = get_cell description, target_row, target_col
         cell.change_contents transform(val, deets[:transform])
       end
     end
@@ -195,37 +181,37 @@ folder_base_index = headers.index :folder_base
 
     # binding.pry
     if headers.index :image_files
-     files  = row[headers.index :image_files].value.to_s.strip.chomp('|').split('|')
-     labels = row[headers.index :image_labels].value.to_s.strip.chomp('|').split('|')
-     unless files.size == labels.size
-      STDERR.puts "WARNING: files do not match labels: #{files}/#{labels}"
-      STDERR.puts "SKIPPING: row: #{rowindex + 1} -- #{row[headers.index :call_number_id].value}"
-      next unless File.exist? out_xlsx
-      STDERR.puts "Removing output file '#{out_xlsx}'" if File.exist? out_xlsx
-      FileUtils.rm out_xlsx if File.exist? out_xlsx
-      next
-    end
+      files  = row[headers.index :image_files].value.to_s.strip.chomp('|').split('|')
+      labels = row[headers.index :image_labels].value.to_s.strip.chomp('|').split('|')
+      unless files.size == labels.size
+        STDERR.puts "WARNING: files do not match labels: #{files}/#{labels}"
+        STDERR.puts "SKIPPING: row: #{rowindex + 1} -- #{row[headers.index :call_number_id].value}"
+        next unless File.exist? out_xlsx
+        STDERR.puts "Removing output file '#{out_xlsx}'" if File.exist? out_xlsx
+        FileUtils.rm out_xlsx if File.exist? out_xlsx
+        next
+      end
 
-    file_labels = files.zip labels
-    file_labels.each_with_index do |file_label, k|
-      file, label = file_label
-      base = File.basename file
-      file_cell = get_cell pages, PAGES_START_ROW + k, FILE_NAME_COLUMN
-      file_cell.change_contents base
-      page_cell = get_cell pages, PAGES_START_ROW + k, DISPLAY_PAGE_COLUMN
-      page_cell.change_contents label
+      file_labels = files.zip labels
+      file_labels.each_with_index do |file_label, k|
+        file, label = file_label
+        base        = File.basename file
+        file_cell   = get_cell pages, PAGES_START_ROW + k, FILE_NAME_COLUMN
+        file_cell.change_contents base
+        page_cell   = get_cell pages, PAGES_START_ROW + k, DISPLAY_PAGE_COLUMN
+        page_cell.change_contents label
+      end
+    else
+      Dir["#{folder}/*.tif"].each_with_index do |tif, k|
+        next if tif =~ SKIP_IMAGE_PATTERN
+        base      = File.basename tif
+        file_cell = get_cell pages, PAGES_START_ROW + k, FILE_NAME_COLUMN
+        file_cell.change_contents base
+        page_cell = get_cell pages, PAGES_START_ROW + k, DISPLAY_PAGE_COLUMN
+        page_num  = "#{(k + 2) / 2}#{RV[k % 2]}"
+        page_cell.change_contents page_num
+      end
     end
-  else
-    Dir["#{folder}/*.tif"].each_with_index do |tif,k|
-      next if tif =~ SKIP_IMAGE_PATTERN
-      base = File.basename tif
-      file_cell = get_cell pages, PAGES_START_ROW + k, FILE_NAME_COLUMN
-      file_cell.change_contents base
-      page_cell = get_cell pages, PAGES_START_ROW + k, DISPLAY_PAGE_COLUMN
-      page_num = "#{(k + 2)/ 2}#{RV[k % 2]}"
-      page_cell.change_contents page_num
-    end
-  end
 
     outbook.write out_xlsx
     puts "Wrote #{out_xlsx}"
