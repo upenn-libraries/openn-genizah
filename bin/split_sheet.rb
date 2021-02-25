@@ -22,10 +22,10 @@ FILE_NAME_COLUMN        = 2 # Excel col: C
 PAGES_START_ROW         = 3 # Excel row: 4
 
 MAPPING    = YAML::load open(File.expand_path '../../mapping.yml', __FILE__)
-SOURCE_DIR = '/Users/emeryr/tmp/zucker_files/data'
 # SOURCE_DIR = File.expand_path '../data/FLP', __FILE__
 # SOURCE_DIR = '/Volumes/mmscratchspace/openn/packages/Prep/genizah'
-# SOURCE_DIR = '/mnt/scratch02/openn/packages/Prep/flp_leaves'
+SOURCE_DIR = '/mnt/scratch03/openn/packages/Prep/zucker'
+# SOURCE_DIR = '/Users/emeryr/tmp/zucker_files/data'
 
 CREATE_DIRS    = ENV['GENIZAH_CREATE_DIRS']    || false
 ALLOW_NO_TIFFS = ENV['GENIZAH_ALLOW_NO_TIFFS'] || false
