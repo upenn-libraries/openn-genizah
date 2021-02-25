@@ -202,14 +202,17 @@ folder_base_index = headers.index :folder_base
         page_cell.change_contents label
       end
     else
-      Dir["#{folder}/*.tif"].each_with_index do |tif, k|
+      # Counter for each row we process
+      idx = 0
+      Dir["#{folder}/*.tif"].sort.each do |tif| # sort so we get a reasonable page order
         next if tif =~ SKIP_IMAGE_PATTERN
         base      = File.basename tif
-        file_cell = get_cell pages, PAGES_START_ROW + k, FILE_NAME_COLUMN
+        file_cell = get_cell pages, PAGES_START_ROW + idx, FILE_NAME_COLUMN
         file_cell.change_contents base
-        page_cell = get_cell pages, PAGES_START_ROW + k, DISPLAY_PAGE_COLUMN
-        page_num  = "#{(k + 2) / 2}#{RV[k % 2]}"
+        page_cell = get_cell pages, PAGES_START_ROW + idx, DISPLAY_PAGE_COLUMN
+        page_num  = "#{(idx + 2) / 2}#{RV[idx % 2]}"
         page_cell.change_contents page_num
+        idx += 1
       end
     end
 
