@@ -28,7 +28,6 @@ SOURCE_DIR = '/mnt/scratch03/openn/packages/Prep/zucker'
 # SOURCE_DIR = '/Users/emeryr/tmp/zucker_files/data'
 
 CREATE_DIRS    = ENV['GENIZAH_CREATE_DIRS']    || false
-ALLOW_NO_TIFFS = ENV['GENIZAH_ALLOW_NO_TIFFS'] || false
 NO_CLOBBER     = ENV['GENIZAH_NO_CLOBBER']     || false
 REQUIRE_TIFFS  = ENV['REQUIRE_TIFFS']          || true
 
