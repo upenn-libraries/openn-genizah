@@ -24,12 +24,13 @@ PAGES_START_ROW         = 3 # Excel row: 4
 MAPPING    = YAML::load open(File.expand_path '../../mapping.yml', __FILE__)
 # SOURCE_DIR = File.expand_path '../data/FLP', __FILE__
 # SOURCE_DIR = '/Volumes/mmscratchspace/openn/packages/Prep/genizah'
-SOURCE_DIR = '/mnt/scratch03/openn/packages/Prep/zucker'
-# SOURCE_DIR = '/Users/emeryr/tmp/zucker_files/data'
+# SOURCE_DIR = '/mnt/scratch03/openn/packages/Prep/zucker'
+SOURCE_DIR = '/Users/emeryr/tmp/zucker_files/data'
 
 CREATE_DIRS    = ENV['GENIZAH_CREATE_DIRS']    || false
 NO_CLOBBER     = ENV['GENIZAH_NO_CLOBBER']     || false
-REQUIRE_TIFFS  = ENV['REQUIRE_TIFFS']          || true
+# REQUIRE_TIFFS: true by default; set var to 'no' or 'false' to skip tiffs
+REQUIRE_TIFFS  = %w{no false}.include?(ENV['GENIZAH_REQUIRE_TIFFS'].to_s.downcase) ? false : true
 
 # HalperCallNumber = Struct.new :folder, :mark, :url
 # HALPER_IDS = open(IDS_FILE).readlines.inject({}) { |h, line|
@@ -137,7 +138,6 @@ folder_base_index = headers.index :folder_base
       raise "Row doesn't have folder_base expected at #{address}"
     end
     folder = File.join SOURCE_DIR, folder_base
-    # binding.pry
     if Dir.exists? folder
       if Dir["#{folder}/*.tif"].empty? && REQUIRE_TIFFS
         STDERR.puts "Skipping folder without TIFFs: '#{folder}'; row #{rowindex}"
@@ -178,7 +178,6 @@ folder_base_index = headers.index :folder_base
 
     pages = outbook['Pages']
 
-    # binding.pry
     if headers.index :image_files
       files  = row[headers.index :image_files].value.to_s.strip.chomp('|').split('|')
       labels = row[headers.index :image_labels].value.to_s.strip.chomp('|').split('|')
@@ -222,7 +221,6 @@ folder_base_index = headers.index :folder_base
     STDERR.puts $!.backtrace
     STDERR.puts "Error processing row #{rowindex} and folder_base '#{folder_base}'"
     STDERR.puts "Removing output file '#{out_xlsx}'"
-    # binding.pry
     FileUtils.rm out_xlsx if out_xlsx && File.exist?(out_xlsx)
   end
 end
