@@ -65,6 +65,9 @@
 :former_owner_name:
   :head: Former Owner name
   :transform:
+:former_owner_uri:
+  :head: Former Owner URI
+  :transform:
 :scribe_name:
   :head: Scribe name
   :transform:
