@@ -39,7 +39,6 @@ bower.json
 .env.db
 .env
 .docker-environment
-.ruby-version
 .\#*
 .byebug_history
 data/Halper
