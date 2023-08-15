@@ -121,7 +121,7 @@ workbook = RubyXL::Parser.parse xlsx_input
 worksheet = workbook[0]
 
 headers = worksheet[0].cells.map do |cell|
-  break if cell.nil?
+  next if cell.nil?
   normal_head(cell.value).to_sym
 end
 
@@ -131,7 +131,7 @@ folder_base_index = headers.index :folder_base
 # RUN
 #----------------------------------------------------------------------
 
-(1..1000).each do |rowindex|
+(1..2000).each do |rowindex|
   break if worksheet[rowindex].nil?
   row = worksheet[rowindex]
 
