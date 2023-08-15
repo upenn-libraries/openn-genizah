@@ -19,11 +19,11 @@ PLATFORMS
 
 DEPENDENCIES
   nokogiri (= 1.8.0)
-  pry
-  rubyXL (~> 3.3.23)
+  pry (= 0.10.4)
+  rubyXL (~> 3.4.1)
 
 RUBY VERSION
    ruby 2.4.3p205
 
 BUNDLED WITH
-   1.16.1
+   2.0.1
