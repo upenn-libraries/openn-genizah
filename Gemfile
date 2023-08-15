@@ -1,10 +1,10 @@
- source 'https://rubygems.org'
+source 'https://rubygems.org'
 
-ruby '2.4.1'
+ruby '2.4.3'
 
 gem 'rubyXL', '~> 3.3.23'
 gem 'nokogiri', '1.8.0'
 
 group :development, :test do
-  gem 'pry', '0.10.4'
+  gem 'pry'
 end
