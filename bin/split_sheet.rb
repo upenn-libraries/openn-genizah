@@ -25,7 +25,7 @@ MAPPING    = YAML::load open(File.expand_path '../../mapping.yml', __FILE__)
 # SOURCE_DIR = File.expand_path '../data/FLP', __FILE__
 # SOURCE_DIR = '/Volumes/mmscratchspace/openn/packages/Prep/genizah'
 # SOURCE_DIR = '/mnt/scratch03/openn/packages/Prep/zucker'
-SOURCE_DIR = '/Users/emeryr/tmp/zucker_files/data'
+SOURCE_DIR = ENV['GENIZAH_SOURCE_DIR'] || '.'
 
 CREATE_DIRS    = ENV['GENIZAH_CREATE_DIRS']    || false
 NO_CLOBBER     = ENV['GENIZAH_NO_CLOBBER']     || false
