@@ -50,6 +50,9 @@
 :subject_topical:
   :head: 'Subject: topical'
   :transform: REMOVE_TRAILING_PERIOD
+:description:
+  :head: Description
+  :transform: STRING_CLEANUP
 :place_of_origin:
   :head: Place of origin
   :transform:

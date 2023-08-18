@@ -19,6 +19,7 @@ Layout
 Support Material
 Language
 Subject: topical
+Description
 Place of origin
 Script
 Decoration
