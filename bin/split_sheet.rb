@@ -69,11 +69,18 @@ def normal_head value
   value.downcase.strip.gsub /[^[:alnum:]]+/, '_'
 end
 
+def format_year value
+  i = value.to_i
+  # format a positive (CE) integer as 4-digit year: '230' => '0230'
+  sign = i < 0 ? '-' : ''
+  sprintf "#{sign}%04d", i.abs
+end
+
 def transform val, rule
   case rule
   when 'YEAR'
     raise "Not a valid integer: #{val}" unless is_i? val
-    sprintf "%04d", val.to_i
+    format_year val
   when 'REMOVE_TRAILING_PERIOD'
     # remove a final '.'
     # for cleaning up keyword terms
