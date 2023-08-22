@@ -35,6 +35,9 @@
 :page_dimensions:
   :head: Page dimensions
   :transform:
+:bound_dimensions:
+  :head: Bound dimensions
+  :transform:
 :note_s_:
   :head: Note(s)
   :transform: STRING_CLEANUP
@@ -64,6 +67,9 @@
   :transform:
 :author_name:
   :head: Author name
+  :transform:
+:author_uri:
+  :head: Author URI
   :transform:
 :former_owner_name:
   :head: Former Owner name

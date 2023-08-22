@@ -14,6 +14,7 @@ Date (narrative)
 Date (range) start
 Date (range) end
 Page dimensions
+Bound dimensions
 Note(s)
 Layout
 Support Material
@@ -23,7 +24,9 @@ Description
 Place of origin
 Script
 Decoration
+Binding
 Author name
+Author URI
 Former Owner name
 Scribe name
 Provenance details
