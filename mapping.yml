@@ -65,6 +65,9 @@
 :decoration:
   :head: Decoration
   :transform:
+:binding:
+  :head: Binding
+  :transform: STRING_CLEANUP
 :author_name:
   :head: Author name
   :transform:
